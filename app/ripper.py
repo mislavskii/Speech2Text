@@ -39,16 +39,43 @@ def build_transcript(audio_file: str):
     print(f'transcript {transcript.id} of {file_name} saved as TXT.')
 
 
+def pull_video(url: str):
+    ydl_opts = {
+    'format': 'bestvideo+bestaudio/best',  # The best video and audio version
+    'outtmpl': 'files/%(title)s_%(id)s.%(ext)s',  # The output name will be the title and id followed by the extension
+    }
+
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(url)
+    video_file = ydl.prepare_filename(info)
+    print(f'\n>>> Downloaded to: {video_file}')
+
+
 def pull_and_transcribe(url: str):
     audio_file = pull_soundtrack(url)
     build_transcript(audio_file)
 
 
 def main():
-    url = input('Enter the URL of the video: ')
+    url = input('Enter the video URL: ')
     if not url:
         url = 'https://www.youtube.com/watch?v=wtolixa9XTg'
-    pull_and_transcribe(url)
+        print(f'using the demo url ({url})')
+    
+    action = None
+    while action not in ['v', 't', 'q']:
+        if action:
+            print('Invalid input. Please try again.')
+        action = input('Do you want to pull a video(v) or to build a transcript thereof(t)? (v/t/ q to exit): ')
+    if action == 'v':
+        pull_video(url)
+        print()
+    elif action == 't':
+        pull_and_transcribe(url)
+        print()
+    else:
+        print('>>> Terminated by user.\n')
+        return
 
 
 if __name__ == '__main__':
