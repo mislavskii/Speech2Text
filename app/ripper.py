@@ -14,7 +14,7 @@ def pull_soundtrack(url: str, dst_dir='files'):
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url)
-        audio_file = ydl.prepare_filename(info)
+        audio_file = ydl.prepare_filename(info)  # TODO: Use info dic values to build the file name
 
     print(f'\n>>> Downloaded to: {audio_file}')
     return audio_file
@@ -57,26 +57,34 @@ def pull_and_transcribe(url: str):
 
 
 def main():
+    action = None
+    while action not in ['1', '2', '3', 'q']:
+        if action:
+            print('Invalid input. Please try again.')
+        action = input(
+            '''This worker can:
+            - [1] build a transcript of locally stored media file;
+            - [2] build a transcript of a YouTube video;
+            - [3] pull a YouTube video and save it locally;
+            Choose action, q to exit): '''
+        )
+    if action == 'q':
+        return
+    if action == '1':
+        path = input('Path to local media file: ')
+        build_transcript(path)
+        return
     url = input('Enter the video URL: ')
     if not url:
         url = 'https://www.youtube.com/watch?v=wtolixa9XTg'
         print(f'using the demo url ({url})')
-    
-    action = None
-    while action not in ['v', 't', 'q']:
-        if action:
-            print('Invalid input. Please try again.')
-        action = input('Do you want to pull a video(v) or to build a transcript thereof(t)? (v/t/ q to exit): ')
-    if action == 'v':
-        pull_video(url)
-        print()
-    elif action == 't':
+    if action == '2':
         pull_and_transcribe(url)
         print()
-    else:
-        print('>>> Terminated by user.\n')
-        return
-
+    elif action == '3':
+        pull_video(url)
+        print()
+    
 
 if __name__ == '__main__':
     main()
