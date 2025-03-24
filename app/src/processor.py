@@ -21,19 +21,23 @@ def make_markdown(path: str):
 def find_timestamps(path: str):
     sub_df = pd.read_csv(path, sep='\t')
     print('Subtitle data loaded.' + '\n')
-    while True:
+    while True:  # TODO: move the execution cycle to main()
         query = input('Enter the text to search for: ')
         if not query:
             break
         res = sub_df[sub_df['text'].str.contains(query)]
-        if res.empty:
+        build_console_response(res)
+        # return res
+        
+
+def build_console_response(data: pd.DataFrame):
+    if data.empty:
             print('No matches found.')
-        else:
-            # print('\n', res[['start_time', 'end_time', 'text']], '\n')
-            print()
-            for i, row in res.iterrows():
-                print(f'{row.start_time} -> {row.end_time}: {row.text}')
-            print()
+    else:
+        print()
+        for i, row in data.iterrows():
+            print(f'{row.start_time} -> {row.end_time}: {row.text}')
+        print()
     
 
 def main():
