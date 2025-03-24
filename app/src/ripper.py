@@ -66,7 +66,7 @@ def main():
             - [1] build a transcript of locally stored media file;
             - [2] build a transcript of a YouTube video;
             - [3] pull a YouTube video and save it locally;
-            Choose action, q to exit): '''
+            Choose action, q to exit: '''
         )
     if action == 'q':
         return
