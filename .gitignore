@@ -1,4 +1,6 @@
-/files
+files
 /subtitles
 /ref
 config.py
+
+__pycache__
