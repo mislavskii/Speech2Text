@@ -1,7 +1,10 @@
 # This is going to be the main file that will be used to process the transcripts.
+import re
+from datetime import datetime as dt
 import pandas as pd
 
 YT_BASE_URL = 'https://www.youtube.com/watch?v='
+TIME_FORMAT = '%H:%M:%S.%f'
 
 
 def make_markdown(path: str):
@@ -16,6 +19,40 @@ def make_markdown(path: str):
         f.write(f'# [{title}]({YT_BASE_URL}{video_id})\n\n')
         f.write(f'transcript_id: {transcript_id}\n\n')
         f.write(text)
+
+
+def match_timestamps_wth_texts(vtt_file, min_duration=.1, save_tsv=True, save_txt=True):
+    timestamps = []
+    texts = []
+
+    # Regular expression to match the timestamp pattern
+    timestamp_pattern = re.compile(r'(\d{2}:\d{2}:\d{2}.\d{3}) --> (\d{2}:\d{2}:\d{2}.\d{3})')
+
+    with open(vtt_file, 'r', encoding='utf-8') as file:
+        lines = file.readlines()
+    for idx, line in enumerate(lines):
+        match = timestamp_pattern.match(line.strip())
+        if match:
+            start_time, end_time = match.groups()
+            delta = dt.strptime(end_time, TIME_FORMAT) - dt.strptime(start_time, TIME_FORMAT)
+            if delta.total_seconds() > min_duration:    
+                timestamps.append((start_time, end_time))
+                text = lines[idx + 2].strip()
+                texts.append(re.sub(r'<[^>]*>', '', text))
+    stamped = list(zip(timestamps, texts))
+
+    if save_tsv:
+        with open(vtt_file.replace('.vtt', '.tsv'), "w", encoding="utf-8") as file:
+            file.write("start_time\tend_time\ttext\n")
+            for timestamp, text in stamped:
+                file.write(f"{timestamp[0]}\t{timestamp[1]}\t{text}\n")
+
+    if save_txt:
+        with open(vtt_file.replace('.vtt', '.txt'), "w", encoding="utf-8") as file:
+            for timestamp, text in stamped:
+                file.write(f"{text}\n")
+    
+    return stamped
 
 
 def find_timestamps(path: str):
