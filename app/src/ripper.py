@@ -1,5 +1,7 @@
 import json
+
 import yt_dlp
+
 import assemblyai as aai
 
 from config import *
@@ -18,6 +20,30 @@ def pull_soundtrack(url: str, dst_dir='files'):
 
     print(f'\n>>> Downloaded to: {audio_file}')
     return audio_file
+
+
+def extract_subtitles(video_url: str, lang='th', output_path='files', skip_download=True):
+    """Extract subtitles from a YouTube video and save them to a file.
+    Args:
+        video_url (str): The URL of the YouTube video.
+        lang (str): The language code of the subtitles to extract.
+        output_path (str): The path to save the subtitles file.
+        skip_download (bool): Whether to skip downloading the video.
+    :return: The path to the saved subtitles file.
+    """
+    ydl_opts = {
+        'writesubtitles': True,
+        'writeautomaticsub': True,  # Enable auto-generated subtitles
+        'subtitleslangs': [lang],
+        'skip_download': skip_download,
+        'outtmpl': f'{output_path}/%(title)s_%(id)s.%(ext)s',
+        'format': 'best'
+    }
+
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(video_url, download=True)
+    subtitle_path = info['requested_subtitles'][lang]['filepath']
+    return subtitle_path
 
 
 def build_transcript(audio_file: str):
