@@ -12,8 +12,8 @@ class TestProcessor(unittest.TestCase):
         if os.path.exists(self.vtt_file.replace('.vtt', '.txt')):
             os.remove(self.vtt_file.replace('.vtt', '.txt'))
 
-    def test_match_timestamps_wth_texts(self):
-        result = match_timestamps_wth_texts(self.vtt_file)
+    def test_match_timestamps_wth_auto_subs(self):
+        result = match_timestamps_wth_auto_subs(self.vtt_file)
         expected = [
             (('00:00:00.160', '00:00:04.510'), 'ถามว่ามันเกิดอะไรขึ้นประเทศสยามถึงถูก'),
             (('00:00:04.520', '00:00:08.150'), 'เปลี่ยนเป็นประเทศไทยตอบว่าการเมืองชาติ'),
@@ -22,7 +22,7 @@ class TestProcessor(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def test_tsv_file_creation(self):
-        match_timestamps_wth_texts(self.vtt_file)
+        match_timestamps_wth_auto_subs(self.vtt_file)
         self.assertTrue(os.path.exists('app/test/files/test.tsv'))
         with open('app/test/files/test.tsv', 'r', encoding='utf-8') as f:
             content = f.read()
@@ -33,7 +33,7 @@ class TestProcessor(unittest.TestCase):
         self.assertEqual(content, expected_content)
 
     def test_txt_file_creation(self):
-        match_timestamps_wth_texts(self.vtt_file)
+        match_timestamps_wth_auto_subs(self.vtt_file)
         self.assertTrue(os.path.exists('app/test/files/test.txt'))
         with open('app/test/files/test.txt', 'r', encoding='utf-8') as f:
             content = f.read()

@@ -21,7 +21,7 @@ def make_markdown(path: str):
         f.write(text)
 
 
-def match_timestamps_wth_texts(vtt_file, min_duration=.1, save_tsv=True, save_txt=True):
+def match_timestamps_wth_auto_subs(vtt_file, min_duration=.1, save_tsv=True, save_txt=True):
     timestamps = []
     texts = []
 
