@@ -8,12 +8,12 @@ def harvest_from_video(url):
             'Choose action:\n'
             '\t[1] Extract subtitles\n'
             '\t[2] Download video\n'
+            '\t[3] Download soundtrack\n'
             '\t[Enter] to quit: ' 
         )
         if not action:
             break
-        elif action == '1':
-            # url = input('Enter the URL of the video: ')
+        elif action == '1':  # extract subtitles
             lang = input('Enter the language code [th]: ')
             path = input('Enter the path to save the subtitles (defaults to `files`): ')
             download_video = input('Download and save the video? [y / Enter to skip]: ')
@@ -26,8 +26,10 @@ def harvest_from_video(url):
             print(f'Subtitles extracted to {subtitle_path}.')
         elif action == '2':
             rpr.pull_video(url)
+        elif action == '3':
+            rpr.pull_soundtrack(url)
         else:
-            print('Unknown action. Please reconsider')
+            print('Unknown action. Please clarify.')
 
 
 def main():
