@@ -2,21 +2,18 @@ import ripper as rpr
 import processor as prc
 
 
-def main():
+def harvest_from_video(url):
     while True:
         action = input(
-                'Choose action:\n'
-                '\t[1] Extract subtitles\n'
-                '\t[2] Build transcript\n'
-                '\t[Enter] to quit: ' 
-            )
+            'Choose action:\n'
+            '\t[1] Extract subtitles\n'
+            '\t[2] Download video\n'
+            '\t[Enter] to quit: ' 
+        )
         if not action:
             break
-        if action not in ['1', '2']:
-            print('Illegal action. Please reconsider')
-            continue
-        if action == '1':
-            url = input('Enter the URL of the video: ')
+        elif action == '1':
+            # url = input('Enter the URL of the video: ')
             lang = input('Enter the language code [th]: ')
             path = input('Enter the path to save the subtitles (defaults to `files`): ')
             download_video = input('Download and save the video? [y / Enter to skip]: ')
@@ -27,9 +24,34 @@ def main():
                 skip_download = False if download_video else True
             )
             print(f'Subtitles extracted to {subtitle_path}.')
+        elif action == '2':
+            rpr.pull_video(url)
+        else:
+            print('Unknown action. Please reconsider')
+
+
+def main():
+    while True:
+        action = input(
+                'Choose action:\n'
+                '\t[1] Harvest from video url\n'
+                '\t[2] Build transcript\n'
+                '\t[3] Process transcript\n' 
+                '\t[Enter] to quit: ' 
+        )
+        if not action:
+            break
+        if action not in ['1', '2']:
+            print('Illegal action. Please reconsider')
+            continue
+
+        if action == '1':
+            url = input('Enter the URL of the video: ')
+            harvest_from_video(url)
+
         if action == '2':
             audio_file = input('Enter the path to the audio file: ')
-            prc.build_transcript(audio_file)
+            rpr.build_transcript(audio_file)
             print(f'Transcript built from {audio_file}.')
 
 
