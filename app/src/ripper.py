@@ -8,8 +8,8 @@ aai.settings.api_key = aai_key  # Set the API key for AssemblyAI using externall
 
 def pull_soundtrack(url: str, dst_dir='files'):
     ydl_opts = {
-    'format': 'm4a/bestaudio/best',  # The best audio version in m4a format
-    'outtmpl': f'{dst_dir}/%(title)s_%(id)s.%(ext)s',  
+        'format': 'bestaudio/best',  # The best audio version
+        'outtmpl': f'{dst_dir}/%(title)s_%(id)s.%(ext)s',  
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -69,8 +69,8 @@ def build_transcript(audio_file: str):
 
 def pull_video(url: str):
     ydl_opts = {
-    'format': 'bestvideo+bestaudio/best',  # The best video and audio version
-    'outtmpl': 'files/%(title)s_%(id)s.%(ext)s',  # The output name will be the title and id followed by the extension
+        'format': 'bestvideo+bestaudio/best',  # The best video and audio version
+        'outtmpl': 'files/%(title)s_%(id)s.%(ext)s',  # The output name will be the title and id followed by the extension
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
