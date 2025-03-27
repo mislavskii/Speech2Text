@@ -9,7 +9,7 @@ def harvest_from_video(url):
             '\t[1] Extract subtitles\n'
             '\t[2] Download video\n'
             '\t[3] Download soundtrack\n'
-            '\t[Enter] to quit: ' 
+            '\t[Enter] to return to the main menu: ' 
         )
         if not action:
             break
@@ -43,18 +43,16 @@ def main():
         )
         if not action:
             break
-        if action not in ['1', '2']:
-            print('Illegal action. Please reconsider')
-            continue
-
-        if action == '1':
+        elif action == '1':
             url = input('Enter the URL of the video: ')
             harvest_from_video(url)
-
-        if action == '2':
+        elif action == '2':
             audio_file = input('Enter the path to the audio file: ')
             rpr.build_transcript(audio_file)
             print(f'Transcript built from {audio_file}.')
+        else:
+            print('Illegal action. Please clarify.')
+            continue
 
 
 if __name__ == '__main__':
