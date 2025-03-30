@@ -44,14 +44,16 @@ def main():
         if not action:
             break
         elif action == '1':
-            url = input('Enter the URL of the video: ')
+            url = input('Enter the video URL: ')
             harvest_from_video(url)
         elif action == '2':
             audio_file = input('Enter the path to the audio file: ')
             rpr.build_transcript(audio_file)
             print(f'Transcript built from {audio_file}.')
+        elif action == '3':  # process transcript
+            print('Coming soon...')
         else:
-            print('Illegal action. Please clarify.')
+            print('Unknown action. Please clarify.')
             continue
 
 
