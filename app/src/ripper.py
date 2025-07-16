@@ -28,13 +28,22 @@ def extract_subtitles(video_url: str, *, lang='th', output_path='files', skip_do
     # Ensure output directory exists
     Path(output_path).mkdir(parents=True, exist_ok=True)
 
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(video_url, download=True)
+    try:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(video_url, download=True)
+            if not info:
+                return None
+    except Exception as e:
+        print(f"Error extracting data: {e}")
+        return None
+            
+    subtitle_path = None
     try:
         subtitle_path = info['requested_subtitles'][lang]['filepath']
     except KeyError:
         print(f'No subtitles found for {lang} language.')
-        subtitle_path = None
+    except Exception as e:
+        print(f'Execution unsuccessful due to {e}')
     return subtitle_path
 
 
