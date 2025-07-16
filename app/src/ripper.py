@@ -62,8 +62,11 @@ def pull_soundtrack(url: str, dst_dir='files'):
 
 def build_transcript(audio_file: str):
     transcriber = aai.Transcriber()
+    config = aai.TranscriptionConfig(
+        speaker_labels=True
+    )
     print('building transcript...')
-    transcript = transcriber.transcribe(audio_file)
+    transcript = transcriber.transcribe(audio_file.strip('"'), config=config)
     print(f'transcript {transcript.id} of {audio_file} ready.')
     
     file_name = audio_file.split("\\")[-1].split(".")[0]
@@ -75,7 +78,9 @@ def build_transcript(audio_file: str):
     )
     print(f'transcript {transcript.id} of {file_name} saved as JSON.')
     with open(f'files/transcript_{file_name}_{transcript.id}.txt', 'w', encoding='utf-8') as f:
-        f.write(transcript.text)
+        # f.write(transcript.text)
+        for utterance in transcript.utterances:
+            f.write(f'Speaker_{utterance.speaker}: {utterance.text}\n')
     print(f'transcript {transcript.id} of {file_name} saved as TXT.')
 
 
