@@ -2,8 +2,12 @@ files
 /subtitles
 /ref
 config.py
-
+*venv
 __pycache__
 notebooks/Untitled-1.ipynb
 __init__*
 notebooks/speech2file.ipynb
+
+.idea*
+*_cache*
+.vscode*
