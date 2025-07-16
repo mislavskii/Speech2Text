@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 import yt_dlp
 import assemblyai as aai
 
@@ -23,6 +24,9 @@ def extract_subtitles(video_url: str, *, lang='th', output_path='files', skip_do
         'outtmpl': f'{output_path}/%(title)s_%(id)s.%(ext)s',
         'format': 'best'
     }
+
+    # Ensure output directory exists
+    Path(output_path).mkdir(parents=True, exist_ok=True)
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(video_url, download=True)
