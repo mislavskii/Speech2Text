@@ -2,7 +2,8 @@ import ripper as rpr
 import processor as prc
 
 
-def harvest_from_video(url):
+def harvest_from_video():
+    url = input('Enter the video URL: ')
     while True:
         action = input(
             'Choose action:\n'
@@ -32,6 +33,12 @@ def harvest_from_video(url):
             print('Unknown action. Please clarify.')
 
 
+def build_transcript():
+    audio_file = input('Enter the path to the audio file: ')
+    rpr.build_transcript(audio_file)
+    print(f'Transcript built from {audio_file}.')
+
+
 def main():
     while True:
         action = input(
@@ -44,12 +51,9 @@ def main():
         if not action:
             break
         elif action == '1':
-            url = input('Enter the video URL: ')
-            harvest_from_video(url)
+            harvest_from_video()
         elif action == '2':
-            audio_file = input('Enter the path to the audio file: ')
-            rpr.build_transcript(audio_file)
-            print(f'Transcript built from {audio_file}.')
+            build_transcript()
         elif action == '3':  # process transcript
             print('Coming soon...')
         else:
