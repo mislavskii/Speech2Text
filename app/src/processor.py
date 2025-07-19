@@ -5,6 +5,7 @@ import pandas as pd
 
 YT_BASE_URL = 'https://www.youtube.com/watch?v='
 TIME_FORMAT = '%H:%M:%S.%f'
+ACTION_PROMPT = 'Enter\n\t"1" to find timestamps,\n\t"2" to create markdown,\n\t"3" to convert vtt to text or tsv: '
 
 
 def make_markdown(path: str):
@@ -79,10 +80,10 @@ def build_console_response(data: pd.DataFrame):
 
 def main():
     while True:
-        action = input('Enter "1" to find timestamps, "2" to create markdown: ')
+        action = input(ACTION_PROMPT).strip().lower()
         if not action:
             break
-        if action not in ['1', '2']:
+        if action not in ['1', '2', '3']:
             print('Invalid action.')
             continue
         if action == '1':
@@ -92,6 +93,18 @@ def main():
             path = input('Enter the path to the transcript file: ')
             make_markdown(path)
             print('Markdown file created.')
+        if action == '3':
+            path = input('Enter path to the vtt subtitle file: ').strip()
+            output_format = input('Enter desired output format (txt/tsv): ').strip().lower()
+            if output_format not in ['tsv', 'txt']:
+                print('Invalid output format!')
+                continue
+            match_timestamps_wth_auto_subs(
+                path, 
+                save_tsv=output_format=='tsv', 
+                save_txt=output_format=='txt'
+            )
+            print('Done!')
 
 
 if __name__ == '__main__':

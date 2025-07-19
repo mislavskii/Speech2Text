@@ -55,7 +55,7 @@ def main():
         elif action == '2':
             build_transcript()
         elif action == '3':  # process transcript
-            print('Coming soon...')
+            prc.main()
         else:
             print('Unknown action. Please clarify.')
             continue
